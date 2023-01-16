@@ -376,6 +376,12 @@ func conditionalAccessPolicyResource() *schema.Resource {
 								ValidateDiagFunc: validate.NoEmptyStrings,
 							},
 						},
+
+						"authentication_strength_policy": {
+							Type:     schema.TypeString,
+							Optional: true,
+							ValidateDiagFunc: validate.UUID,
+						},
 					},
 				},
 			},

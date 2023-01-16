@@ -351,11 +351,13 @@ func expandConditionalAccessGrantControls(in []interface{}) *msgraph.Conditional
 	builtInControls := config["built_in_controls"].([]interface{})
 	customAuthenticationFactors := config["custom_authentication_factors"].([]interface{})
 	termsOfUse := config["terms_of_use"].([]interface{})
+	authenticationStrength := config["operator"].(string)
 
 	result.Operator = &operator
 	result.BuiltInControls = tf.ExpandStringSlicePtr(builtInControls)
 	result.CustomAuthenticationFactors = tf.ExpandStringSlicePtr(customAuthenticationFactors)
 	result.TermsOfUse = tf.ExpandStringSlicePtr(termsOfUse)
+	result.AuthenticationStrength = &authenticationStrength
 
 	return &result
 }

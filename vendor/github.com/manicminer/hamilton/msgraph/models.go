@@ -592,6 +592,7 @@ type ConditionalAccessGrantControls struct {
 	BuiltInControls             *[]ConditionalAccessGrantControl `json:"builtInControls,omitempty"`
 	CustomAuthenticationFactors *[]string                        `json:"customAuthenticationFactors,omitempty"`
 	TermsOfUse                  *[]string                        `json:"termsOfUse,omitempty"`
+	AuthenticationStrength      *string                          `json:"authenticationStrength,omitempty"`
 }
 
 type ConditionalAccessLocations struct {
@@ -1758,4 +1759,11 @@ type UserFlowAttribute struct {
 	DisplayName           *string                    `json:"displayName,omitempty"`
 	UserFlowAttributeType *string                    `json:"userFlowAttributeType,omitempty"`
 	DataType              *UserflowAttributeDataType `json:"dataType,omitempty"`
+}
+
+type AuthenticationStrengthPolicy struct {
+	ID                  *string   `json:"id,omitempty"`
+	DisplayName         *string   `json:"displayName,omitempty"`
+	Description         *string   `json:"description,omitempty"`
+	AllowedCombinations *[]string `json:"allowedCombinations,omitempty"`
 }

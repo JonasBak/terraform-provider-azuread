@@ -13,6 +13,7 @@ import (
 	administrativeunits "github.com/hashicorp/terraform-provider-azuread/internal/services/administrativeunits/client"
 	applications "github.com/hashicorp/terraform-provider-azuread/internal/services/applications/client"
 	approleassignments "github.com/hashicorp/terraform-provider-azuread/internal/services/approleassignments/client"
+	authenticationstrength "github.com/hashicorp/terraform-provider-azuread/internal/services/authenticationstrength/client"
 	conditionalaccess "github.com/hashicorp/terraform-provider-azuread/internal/services/conditionalaccess/client"
 	directoryroles "github.com/hashicorp/terraform-provider-azuread/internal/services/directoryroles/client"
 	domains "github.com/hashicorp/terraform-provider-azuread/internal/services/domains/client"
@@ -34,17 +35,18 @@ type Client struct {
 
 	StopContext context.Context
 
-	AdministrativeUnits *administrativeunits.Client
-	Applications        *applications.Client
-	AppRoleAssignments  *approleassignments.Client
-	ConditionalAccess   *conditionalaccess.Client
-	DirectoryRoles      *directoryroles.Client
-	Domains             *domains.Client
-	Groups              *groups.Client
-	Invitations         *invitations.Client
-	Policies            *policies.Client
-	ServicePrincipals   *serviceprincipals.Client
-	Users               *users.Client
+	AdministrativeUnits    *administrativeunits.Client
+	Applications           *applications.Client
+	AppRoleAssignments     *approleassignments.Client
+	ConditionalAccess      *conditionalaccess.Client
+	DirectoryRoles         *directoryroles.Client
+	Domains                *domains.Client
+	Groups                 *groups.Client
+	Invitations            *invitations.Client
+	Policies               *policies.Client
+	ServicePrincipals      *serviceprincipals.Client
+	Users                  *users.Client
+	AuthenticationStrength *authenticationstrength.Client
 }
 
 func (client *Client) build(ctx context.Context, o *common.ClientOptions) error {
@@ -53,6 +55,7 @@ func (client *Client) build(ctx context.Context, o *common.ClientOptions) error 
 	client.AdministrativeUnits = administrativeunits.NewClient(o)
 	client.Applications = applications.NewClient(o)
 	client.AppRoleAssignments = approleassignments.NewClient(o)
+	client.AuthenticationStrength = authenticationstrength.NewClient(o)
 	client.Domains = domains.NewClient(o)
 	client.ConditionalAccess = conditionalaccess.NewClient(o)
 	client.DirectoryRoles = directoryroles.NewClient(o)
