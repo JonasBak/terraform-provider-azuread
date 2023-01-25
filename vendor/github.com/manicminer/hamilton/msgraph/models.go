@@ -592,7 +592,7 @@ type ConditionalAccessGrantControls struct {
 	BuiltInControls             *[]ConditionalAccessGrantControl `json:"builtInControls,omitempty"`
 	CustomAuthenticationFactors *[]string                        `json:"customAuthenticationFactors,omitempty"`
 	TermsOfUse                  *[]string                        `json:"termsOfUse,omitempty"`
-	AuthenticationStrength      *string                          `json:"authenticationStrength,omitempty"`
+	AuthenticationStrength      *AuthenticationStrengthPolicy    `json:"authenticationStrength"`
 }
 
 type ConditionalAccessLocations struct {

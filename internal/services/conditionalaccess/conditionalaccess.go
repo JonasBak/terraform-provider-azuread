@@ -1,6 +1,8 @@
 package conditionalaccess
 
 import (
+	"log"
+
 	"github.com/manicminer/hamilton/msgraph"
 
 	"github.com/hashicorp/terraform-provider-azuread/internal/tf"
@@ -100,12 +102,18 @@ func flattenConditionalAccessGrantControls(in *msgraph.ConditionalAccessGrantCon
 		return []interface{}{}
 	}
 
+	var authentication_strength_policy *string = nil
+	if in.AuthenticationStrength != nil {
+		authentication_strength_policy = in.AuthenticationStrength.ID
+	}
+
 	return []interface{}{
 		map[string]interface{}{
-			"operator":                      in.Operator,
-			"built_in_controls":             tf.FlattenStringSlicePtr(in.BuiltInControls),
-			"custom_authentication_factors": tf.FlattenStringSlicePtr(in.CustomAuthenticationFactors),
-			"terms_of_use":                  tf.FlattenStringSlicePtr(in.TermsOfUse),
+			"operator":                       in.Operator,
+			"built_in_controls":              tf.FlattenStringSlicePtr(in.BuiltInControls),
+			"custom_authentication_factors":  tf.FlattenStringSlicePtr(in.CustomAuthenticationFactors),
+			"terms_of_use":                   tf.FlattenStringSlicePtr(in.TermsOfUse),
+			"authentication_strength_policy": authentication_strength_policy,
 		},
 	}
 }
@@ -344,20 +352,31 @@ func expandConditionalAccessGrantControls(in []interface{}) *msgraph.Conditional
 		return nil
 	}
 
+	log.Printf("[DEBUG] USING ACCESS GRANT: %+v", in)
+
 	result := msgraph.ConditionalAccessGrantControls{}
 	config := in[0].(map[string]interface{})
+
+	log.Printf("[DEBUG] %+v", config["authentication_strength_policy"])
 
 	operator := config["operator"].(string)
 	builtInControls := config["built_in_controls"].([]interface{})
 	customAuthenticationFactors := config["custom_authentication_factors"].([]interface{})
 	termsOfUse := config["terms_of_use"].([]interface{})
-	authenticationStrength := config["operator"].(string)
+	var authenticationStrength *msgraph.AuthenticationStrengthPolicy = nil
+
+	if config["authentication_strength_policy"] != "" {
+		authentication_strength_policy_id := config["authentication_strength_policy"].(string)
+		authenticationStrength = &msgraph.AuthenticationStrengthPolicy{
+			ID: &authentication_strength_policy_id,
+		}
+	}
 
 	result.Operator = &operator
 	result.BuiltInControls = tf.ExpandStringSlicePtr(builtInControls)
 	result.CustomAuthenticationFactors = tf.ExpandStringSlicePtr(customAuthenticationFactors)
 	result.TermsOfUse = tf.ExpandStringSlicePtr(termsOfUse)
-	result.AuthenticationStrength = &authenticationStrength
+	result.AuthenticationStrength = authenticationStrength
 
 	return &result
 }
